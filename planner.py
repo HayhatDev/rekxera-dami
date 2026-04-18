@@ -2,14 +2,31 @@ import streamlit as st
 
 st.set_page_config(page_title="Rekxare Dami", page_icon="📚")
 
-st.title("📚 Rekxare Dami Ji Bo Xwendekaran")
+st.title("📚 Rekxare Dami | بو قوتابیان و خوێندەکاران")
 
-st.write("ئەم ئامێرە هاریکاری تە دکەت بۆ ڕێکخستنا دەمی خۆندنا تە.")
+nav = st.text_input("ناڤێ خوە بنڤیسە:", "قوتابی")
+if nav:
+    st.write(f"بخێرهاتێ {nav}! 🌟")
 
-ders = st.selectbox("تو کێژان دەرسێ دخوینی؟", ["بیرکاری", "فیزیا", "کیمیا", "ئینگلیزی"])
+st.write("ئەڤ ئامیرە هاریکاریا تە دکەت بۆ ڕێکخستنا دەمی خۆاندنا ته")
 
-deqe = st.slider("چەند دەقیقە؟", 5, 60, 25)
+ders = st.selectbox("تو كيژ دەرسێ دخوینی؟", ["بیرکاری", "فیزیا","عەرەبی","جوگرافیا","مێژوو","کۆمپیوتەر","زیندەوەرزانی","کوردی", "کیمیا", "ئینگلیزی"])
 
-if st.button("دەست پێ بکە"):
-    st.success(f"✅ باشە! تو ئێ {deqe} دەقیقان بۆ {ders} تەرخان دکەی.")
-    st.info("پشتی قەداندنێ، دووبارە ڤەگەڕە بو ئەم ئامێرێ.")
+deqe = st.slider("چەند دەقیقە؟", 5, 120, 25)
+st.progress(deqe / 120)  # شريط تقدم بصري
+
+col1, col2 = st.columns(2)
+with col1:
+    dest_pe_bike = st.button("🚀 دەست پێ بکە")
+with col2:
+    dubare = st.button("🔄 دووبارە")
+
+if dest_pe_bike:
+    st.success(f"✅ باشە {nav}! تو ئێ {deqe} دەقیقان بۆ {ders} تەرخان دکەی.")
+    st.info("⏳ پشتی خواندنێ، دووبارە ڤەگەڕە بو ڤی ئامیرەی.")
+    st.balloons()
+
+if dubare:
+    st.rerun()
+
+
