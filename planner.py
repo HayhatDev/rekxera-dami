@@ -20,11 +20,17 @@ with col1:
     dest_pe_bike = st.button("🚀 دەست پێ بکە")
 with col2:
     dubare = st.button("🔄 دووبارە")
-
+hezt = [ "بەردەوام بە!", "تو دێ سەرکەڤێ!", "ئەڤ چەندە باشە!", "بەرێ خوە بدە ئارمانجان!"]
 if dest_pe_bike:
-    st.success(f"✅ باشە {nav}! تو ئێ {deqe} دەقیقان بۆ {ders} تەرخان دکەی.")
+    st.success(f"✅ باشە {nav}! تو دێ {deqe} دەقیقان بۆ {ders} تەرخان دکەی.")
     st.info("⏳ پشتی خواندنێ، دووبارە ڤەگەڕە بو ڤی ئامیرەی.")
-    st.balloons()
+    st.info(f"💬 {random.choice(hezt)}")
+    if deqe >= 60:
+    st.balloons()  # جلسة طويلة تستحق احتفالاً كبيراً
+elif deqe >= 30:
+    st.snow()      # جلسة متوسطة تستحق تشجيعاً لطيفاً
+else:
+    st.toast("دەستپێکر! سەرکەفتی! ✨")  # جلسة قصيرة: إشعار سريع
 
 if dubare:
     st.rerun()
