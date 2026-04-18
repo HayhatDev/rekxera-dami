@@ -25,12 +25,7 @@ if dest_pe_bike:
     st.success(f"✅ باشە {nav}! تو دێ {deqe} دەقیقان بۆ {ders} تەرخان دکەی.")
     st.info("⏳ پشتی خواندنێ، دووبارە ڤەگەڕە بو ڤی ئامیرەی.")
     st.info(f"💬 {random.choice(hezt)}")
-if deqe >= 60:
-    st.balloons()  # جلسة طويلة تستحق احتفالاً كبيراً
-elif deqe >= 30:
-    st.snow()      # جلسة متوسطة تستحق تشجيعاً لطيفاً
-else:
-    st.toast("دەستپێکر! سەرکەفتی! ✨")  # جلسة قصيرة: إشعار سريع
+    st.ballons()
 
 if dubare:
     st.rerun()
