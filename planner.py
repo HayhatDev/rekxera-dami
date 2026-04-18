@@ -1,8 +1,6 @@
 import streamlit as st
 import time
 import random
-from streamlit_extras.let_it_rain import rain  # بديل أخف للبالونات
-import math
 
 st.set_page_config(
     page_title="Rekxare Dami",
@@ -30,7 +28,6 @@ ders = st.selectbox("تو کێژان دەرسێ دخوینی؟",
 
 deqe = st.slider("چەند دەقیقە؟", 1, 90, 25)
 
-# تحويل الدقائق إلى ثواني
 total_seconds = deqe * 60
 
 col1, col2, col3 = st.columns(3)
@@ -57,24 +54,24 @@ if dubare:
     st.session_state.timer_running = False
     st.rerun()
 
-# عرض المؤقت الدائري الحي
+# عرض المؤقت الحي
 if st.session_state.timer_running and st.session_state.end_time:
     remaining = st.session_state.end_time - time.time()
     
     if remaining > 0:
         mins, secs = divmod(int(remaining), 60)
         
-        # رسم دائرة التقدم
+        # حساب نسبة التقدم
         progress = 1 - (remaining / st.session_state.total_seconds)
         
-        # HTML/CSS لرسم دائرة
+        # دائرة HTML/CSS (بدون مكتبات خارجية)
         st.markdown(f"""
         <div style="display: flex; justify-content: center; margin: 20px;">
             <div style="position: relative; width: 200px; height: 200px;">
                 <svg width="200" height="200" viewBox="0 0 36 36">
-                    <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#eee" stroke-width="2"/>
+                    <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#333" stroke-width="2"/>
                     <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831" fill="none" stroke="#4CAF50" stroke-width="2" stroke-dasharray="{progress * 100}, 100"/>
-                    <text x="18" y="20" text-anchor="middle" fill="white" font-size="10" font-weight="bold">{mins:02d}:{secs:02d}</text>
+                    <text x="18" y="20.5" text-anchor="middle" fill="white" font-size="8" font-weight="bold">{mins:02d}:{secs:02d}</text>
                 </svg>
             </div>
         </div>
@@ -83,7 +80,6 @@ if st.session_state.timer_running and st.session_state.end_time:
         st.success(f"✅ باشە {nav}! تو ئێ {deqe} دەقیقان بۆ {ders} تەرخان دکەی.")
         st.info(f"💬 {random.choice(hezt)}")
         
-        # إعادة تشغيل التطبيق كل ثانية للتحديث
         time.sleep(1)
         st.rerun()
     else:
