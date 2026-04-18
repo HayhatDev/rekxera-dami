@@ -47,16 +47,16 @@ with col1:
 
 with col2:
     if st.session_state.timer_running:
-        stop_timer = st.button("⏸️ بوهێلی")
+        stop_timer = st.button("⏸️ راوەستاندن")
     elif st.session_state.paused:
-        stop_timer = st.button("⏸️ بوهێلی", disabled=True)
+        stop_timer = st.button("⏸️ راوەستاندن", disabled=True)
     else:
-        st.button("⏸️ بوهێلی", disabled=True)
+        st.button("⏸️ راوەستاندن", disabled=True)
 
 with col3:
     dubare = st.button("🔄 دووبارە")
 
-hezt = ["هێژا تە!", "بەردەوام بە!", "تو دێ سەربکەوی!", "ئەڤ چەندە باشە!", "بەرێ خوە بدە ئارمانجان!"]
+hezt = ["بەردەوام بە!", "تو دێ سەرکەڤێ!", "ئەڤ چەندە باشە!", "بەرێ خوە بدە ئارمانجان!"]
 
 # منطق الأزرار
 if "dest_pe_bike" in locals() and dest_pe_bike:
@@ -103,7 +103,7 @@ if st.session_state.timer_running and st.session_state.end_time:
             </div>
         </div>
         """, unsafe_allow_html=True)
-        st.success(f"✅ باشە {nav}! تو ئێ {deqe} دەقیقان بۆ {ders} تەرخان دکەی.")
+        st.success(f"✅ باشە {nav}! تو دێ {deqe} دەقیقان بۆ {ders} تەرخان دکەی.")
         st.info(f"💬 {random.choice(hezt)}")
         time.sleep(1)
         st.rerun()
@@ -111,7 +111,7 @@ if st.session_state.timer_running and st.session_state.end_time:
         st.session_state.timer_running = False
         st.session_state.paused = False
         st.balloons()
-        st.success("🎉 وەختی تە تەواو بوو! هێژا تە!")
+        st.success("🎉 دەمێ تە ب دوماهیک هات! پیروز بیت!")
 
 elif st.session_state.paused and st.session_state.remaining_at_pause > 0:
     # عرض الدائرة متوقفة
@@ -128,7 +128,7 @@ elif st.session_state.paused and st.session_state.remaining_at_pause > 0:
         </div>
     </div>
     """, unsafe_allow_html=True)
-    st.warning(f"⏸️ دەم هاتە وەستاندن. {deqe} دەقیقان بۆ {ders}")
+    st.warning(f"⏸️ دەم هاتە راوەستاندن. {deqe} دەقیقان بۆ {ders}")
 elif not st.session_state.timer_running and not st.session_state.paused and st.session_state.total_seconds > 0:
     # عرض الدائرة بعد إعادة الضبط (فارغة أو ممتلئة حسب الحالة)
-    st.info("🔄 دەم هاتە ژیێکرن. تکایە دووبارە دەست پێ بکە.")
+    st.info("🔄 دەم هاتە راوەستاندن. دووبارە دەست پێ بکە.")
