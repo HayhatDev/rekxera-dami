@@ -8,7 +8,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-st.title("📚 Rekxare Dami Ji Bo Xwendekaran")
+st.title("📚 Rekxare Dami | بو قوتابیان و خوێندەکاران")
 
 # تهيئة session_state
 if "timer_running" not in st.session_state:
@@ -24,7 +24,7 @@ if "remaining_at_pause" not in st.session_state:
 
 nav = st.text_input("ناڤێ خوە بنڤیسە:", "قوتابی")
 if nav:
-    st.write(f"بەخێربێی {nav}! 🌟")
+    st.write(f"بخێر هاتێ {nav}! 🌟")
 
 ders = st.selectbox("تو کێژان دەرسێ دخوینی؟", 
     ["🧮 بیرکاری", "⚛️ فیزیا", "🧪 کیمیا", "🇬🇧 ئینگلیزی", 
