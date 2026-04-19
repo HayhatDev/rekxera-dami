@@ -1,2 +1,2 @@
 # rekxera-dami
-ئامێرێک بو ڕێکخستنا دەمێ خوێندنێ ب زمانێ بادینی | Study time organizer in Badini Kurdish
+ئامیرەک بو رێکخستنا دەمێ خواندنێ ب زمانێ بادینی | Study time organizer in Badini Kurdish
