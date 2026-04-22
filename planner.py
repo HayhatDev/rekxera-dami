@@ -35,11 +35,11 @@ with st.sidebar:
         st.metric("✅ دانیشتن", st.session_state.completed_sessions)
     
     st.divider()
-    st.write(f"📚 دویماهین دەرس: **{st.session_state.last_subject}**")
+    st.write(f"📚 دوماهيك دەرس: **{st.session_state.last_subject}**")
     
     # عرض آخر 3 جلسات
     if st.session_state.study_history:
-        st.write("**📋 دویماهین چالاکی:**")
+        st.write("**📋 دوماهيك چالاکی:**")
         for entry in st.session_state.study_history[-3:][::-1]:
             st.caption(entry)
     
