@@ -1,6 +1,7 @@
 import streamlit as st
 import time
-import random from datetime import datetime
+import random
+from datetime import datetime
 
 st.set_page_config(
     page_title="Rekxare Dami",
