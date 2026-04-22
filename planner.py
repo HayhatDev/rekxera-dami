@@ -1,6 +1,6 @@
 import streamlit as st
 import time
-import random
+import random from datetime import datetime
 
 st.set_page_config(
     page_title="Rekxare Dami",
@@ -8,6 +8,47 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+# --- تهيئة الإحصائيات ---
+if "total_study_seconds" not in st.session_state:
+    st.session_state.total_study_seconds = 0
+if "completed_sessions" not in st.session_state:
+    st.session_state.completed_sessions = 0
+if "last_subject" not in st.session_state:
+    st.session_state.last_subject = "—"
+if "study_history" not in st.session_state:
+    st.session_state.study_history = []
+    # --- الشريط الجانبي: لوحة الإحصائيات ---
+with st.sidebar:
+    st.title("📊 ئامارێن تە")
+    st.divider()
+    
+    # تحويل الثواني إلى ساعات ودقائق
+    total_minutes = st.session_state.total_study_seconds // 60
+    hours = total_minutes // 60
+    mins = total_minutes % 60
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric("⏱️ هەمی دەم", f"{hours} س {mins} خ")
+    with col2:
+        st.metric("✅ دانیشتن", st.session_state.completed_sessions)
+    
+    st.divider()
+    st.write(f"📚 دویماهین دەرس: **{st.session_state.last_subject}**")
+    
+    # عرض آخر 3 جلسات
+    if st.session_state.study_history:
+        st.write("**📋 دویماهین چالاکی:**")
+        for entry in st.session_state.study_history[-3:][::-1]:
+            st.caption(entry)
+    
+    st.divider()
+    if st.button("🧹 ئاماران پاک بکە"):
+        st.session_state.total_study_seconds = 0
+        st.session_state.completed_sessions = 0
+        st.session_state.last_subject = "—"
+        st.session_state.study_history = []
+        st.rerun()
 st.title("📚 Rekxare Dami | بو قوتابیان و خوێندەکاران")
 
 # تهيئة session_state
@@ -79,6 +120,7 @@ if "stop_timer" in locals() and stop_timer:
     st.rerun()
 
 if dubare:
+    # إذا كان المؤقت يعمل، نوقفه بدون تسجيل الجلسة
     st.session_state.timer_running = False
     st.session_state.paused = False
     st.session_state.end_time = None
@@ -107,12 +149,29 @@ if st.session_state.timer_running and st.session_state.end_time:
         st.info(f"💬 {random.choice(hezt)}")
         time.sleep(1)
         st.rerun()
-    else:
+        else:
+        # تمت الجلسة بنجاح
         st.session_state.timer_running = False
         st.session_state.paused = False
+        
+        # إضافة الوقت إلى الإحصائيات
+        st.session_state.total_study_seconds += st.session_state.total_seconds
+        st.session_state.completed_sessions += 1
+        
+        # استخراج اسم المادة بدون الإيموجي
+        subject_name = ders.split(" ", 1)[1] if " " in ders else ders
+        
+        # تحديث آخر مادة
+        st.session_state.last_subject = subject_name
+        
+        # إضافة إلى السجل
+        from datetime import datetime
+        now = datetime.now().strftime("%H:%M")
+        minutes = st.session_state.total_seconds // 60
+        st.session_state.study_history.append(f"{now} - {subject_name} ({minutes} خ)")
+        
         st.balloons()
-        st.success("🎉 دەمێ تە ب دوماهیک هات! پیروز بیت!")
-
+        st.success("🎉 وەختی تە تەواو بوو! هێژا تە!")
 elif st.session_state.paused and st.session_state.remaining_at_pause > 0:
     # عرض الدائرة متوقفة
     mins, secs = divmod(int(st.session_state.remaining_at_pause), 60)
