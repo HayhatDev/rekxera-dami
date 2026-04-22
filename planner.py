@@ -2,12 +2,40 @@ import streamlit as st
 import time
 import random
 from datetime import datetime
-
+import json
+import os
 st.set_page_config(
     page_title="Rekxare Dami",
     page_icon="📚",
     initial_sidebar_state="collapsed"
 )
+
+# --- دوال حفظ وتحميل البيانات ---
+DATA_FILE = "study_data.json"
+
+def load_data():
+    if os.path.exists(DATA_FILE):
+        with open(DATA_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            st.session_state.total_study_seconds = data.get("total_seconds", 0)
+            st.session_state.completed_sessions = data.get("sessions", 0)
+            st.session_state.last_subject = data.get("last_subject", "—")
+            st.session_state.study_history = data.get("history", [])
+
+def save_data():
+    data = {
+        "total_seconds": st.session_state.total_study_seconds,
+        "sessions": st.session_state.completed_sessions,
+        "last_subject": st.session_state.last_subject,
+        "history": st.session_state.study_history
+    }
+    with open(DATA_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+# تحميل البيانات عند بدء التطبيق
+if "data_loaded" not in st.session_state:
+    load_data()
+    st.session_state.data_loaded = True
 
 # --- تهيئة الإحصائيات ---
 if "total_study_seconds" not in st.session_state:
@@ -49,6 +77,7 @@ with st.sidebar:
         st.session_state.completed_sessions = 0
         st.session_state.last_subject = "—"
         st.session_state.study_history = []
+        save_data()
         st.rerun()
 st.title("📚 Rekxare Dami | بو قوتابیان و خوێندەکاران")
 
@@ -176,7 +205,7 @@ if st.session_state.timer_running and st.session_state.end_time:
         now = datetime.now().strftime("%H:%M")
         minutes = st.session_state.total_seconds // 60
         st.session_state.study_history.append(f"{now} - {subject_name} ({minutes} خ)")
-        
+        save_data()
         st.balloons()
         st.success("🎉 وەختی تە تەواو بوو! هێژا تە!")
 
