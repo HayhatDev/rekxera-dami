@@ -130,11 +130,14 @@ if dubare:
     st.rerun()
 
 # عرض المؤقت أو حالة الإيقاف
+# --- عرض المؤقت الحي ---
 if st.session_state.timer_running and st.session_state.end_time:
     remaining = st.session_state.end_time - time.time()
+    
     if remaining > 0:
         mins, secs = divmod(int(remaining), 60)
         progress = 1 - (remaining / st.session_state.total_seconds)
+        
         st.markdown(f"""
         <div style="display: flex; justify-content: center; margin: 20px;">
             <div style="position: relative; width: 200px; height: 200px;">
@@ -146,11 +149,14 @@ if st.session_state.timer_running and st.session_state.end_time:
             </div>
         </div>
         """, unsafe_allow_html=True)
+        
         st.success(f"✅ باشە {nav}! تو دێ {deqe} دەقیقان بۆ {ders} تەرخان دکەی.")
         st.info(f"💬 {random.choice(hezt)}")
+        
         time.sleep(1)
         st.rerun()
-        else:
+        
+    else:
         # تمت الجلسة بنجاح
         st.session_state.timer_running = False
         st.session_state.paused = False
@@ -173,8 +179,9 @@ if st.session_state.timer_running and st.session_state.end_time:
         
         st.balloons()
         st.success("🎉 وەختی تە تەواو بوو! هێژا تە!")
+
+# --- عرض حالة الإيقاف المؤقت ---
 elif st.session_state.paused and st.session_state.remaining_at_pause > 0:
-    # عرض الدائرة متوقفة
     mins, secs = divmod(int(st.session_state.remaining_at_pause), 60)
     progress = 1 - (st.session_state.remaining_at_pause / st.session_state.total_seconds)
     st.markdown(f"""
@@ -189,6 +196,7 @@ elif st.session_state.paused and st.session_state.remaining_at_pause > 0:
     </div>
     """, unsafe_allow_html=True)
     st.warning(f"⏸️ دەم هاتە راوەستاندن. {deqe} دەقیقان بۆ {ders}")
+
+# --- عرض حالة إعادة الضبط ---
 elif not st.session_state.timer_running and not st.session_state.paused and st.session_state.total_seconds > 0:
-    # عرض الدائرة بعد إعادة الضبط (فارغة أو ممتلئة حسب الحالة)
     st.info("🔄 دەم هاتە راوەستاندن. دووبارە دەست پێ بکە.")
