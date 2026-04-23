@@ -238,3 +238,40 @@ elif st.session_state.paused and st.session_state.remaining_at_pause > 0:
 # --- عرض حالة إعادة الضبط ---
 elif not st.session_state.timer_running and not st.session_state.paused and st.session_state.total_seconds > 0:
     st.info("🔄 دەم هاتە راوەستاندن. دووبارە دەست پێ بکە.")
+# --- تطبيق الوضع الليلي ---
+if st.session_state.dark_mode:
+    st.markdown("""
+    <style>
+        /* الخلفية الرئيسية */
+        .stApp {
+            background-color: #1a1a2e;
+        }
+        /* الشريط الجانبي */
+        .css-1d391kg, [data-testid="stSidebar"] {
+            background-color: #16213e;
+        }
+        /* النصوص */
+        .stApp, .stApp h1, .stApp h2, .stApp h3, .stApp p, .stApp label {
+            color: #e0e0e0 !important;
+        }
+        /* حقول الإدخال */
+        .stTextInput input, .stSelectbox select {
+            background-color: #2d2d44;
+            color: #ffffff;
+            border: 1px solid #444;
+        }
+        /* الأزرار */
+        .stButton button {
+            background-color: #4CAF50;
+            color: white;
+        }
+        /* شريط التقدم */
+        .stProgress > div > div {
+            background-color: #4CAF50;
+        }
+        /* الدائرة الرمادية في الخلفية */
+        svg path:first-of-type {
+            stroke: #555 !important;
+        }
+    </style>
+    """, unsafe_allow_html=True)
