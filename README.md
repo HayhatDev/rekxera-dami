@@ -64,7 +64,7 @@
 
 ```bash
 # استنساخ المستودع
-git clone https://github.com/HayhatDev/rekxare-dami.git
+git clone https://github.com/HayhatDev/rekxera-dami
 cd rekxare-dami
 
 # تثبيت المتطلبات
