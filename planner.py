@@ -70,7 +70,16 @@ with st.sidebar:
         st.write("**📋 دوماهيك چالاکی:**")
         for entry in st.session_state.study_history[-3:][::-1]:
             st.caption(entry)
+    st.divider() 
+    st.write("🌓 ڕووکار")
+    if "dark_mode" not in st.session_state:
+        st.session_state.dark_mode = False
     
+    dark_btn = st.checkbox("شەو", value=st.session_state.dark_mode)
+    if dark_btn != st.session_state.dark_mode:
+        st.session_state.dark_mode = dark_btn
+        st.rerun()
+
     st.divider()
     if st.button("🧹 ئاماران پاک بکە"):
         st.session_state.total_study_seconds = 0
