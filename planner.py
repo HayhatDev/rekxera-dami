@@ -75,7 +75,7 @@ with st.sidebar:
     if "dark_mode" not in st.session_state:
         st.session_state.dark_mode = False
     
-    dark_btn = st.checkbox("شەو", value=st.session_state.dark_mode)
+    dark_btn = st.checkbox("شەڤ", value=st.session_state.dark_mode)
     if dark_btn != st.session_state.dark_mode:
         st.session_state.dark_mode = dark_btn
         st.rerun()
