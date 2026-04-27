@@ -7,7 +7,7 @@ import os
 st.set_page_config(
     page_title="Rekxare Dami",
     page_icon="📚",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="expanded"
 )
 
 # --- دوال حفظ وتحميل البيانات ---
