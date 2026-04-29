@@ -216,7 +216,7 @@ if st.session_state.timer_running and st.session_state.end_time:
         st.session_state.study_history.append(f"{now} - {subject_name} ({minutes} خ)")
         save_data()
         st.balloons()
-        st.success("🎉 وەختی تە تەواو بوو! هێژا تە!")
+        st.success("دەمێ تە ب دوماهیک هات! سەرکەفتی بێ 🎉")
 
 # --- عرض حالة الإيقاف المؤقت ---
 elif st.session_state.paused and st.session_state.remaining_at_pause > 0:
