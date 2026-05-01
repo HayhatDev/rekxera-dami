@@ -173,11 +173,20 @@ if nav:
         sun_schedule.append({"start": "07:00", "end": "08:00", "task": "", "done": False})
     
     # عرض كل صف
+        # عرض كل صف
     for i, entry in enumerate(sun_schedule):
-        col_time, col_task, col_done, col_delete = st.columns([2, 5, 1, 1])
+        col_time, col_done, col_task, col_delete = st.columns([2, 1, 5, 1])
         
         with col_time:
             st.write(f"**{entry['start']} - {entry['end']}**")
+        
+        with col_done:
+            done = st.checkbox(
+                "✅",
+                value=entry["done"],
+                key=f"sun_done_{i}_{st.session_state.get('sun_reset', 0)}",
+                label_visibility="collapsed"
+            )
         
         with col_task:
             task_text = st.text_input(
@@ -185,14 +194,6 @@ if nav:
                 value=entry["task"],
                 key=f"sun_task_{i}_{st.session_state.get('sun_reset', 0)}",
                 disabled=done,
-                label_visibility="collapsed"
-            )
-        
-        with col_done:
-            done = st.checkbox(
-                "✅",
-                value=entry["done"],
-                key=f"sun_done_{i}_{st.session_state.get('sun_reset', 0)}",
                 label_visibility="collapsed"
             )
         
