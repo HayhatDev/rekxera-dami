@@ -142,8 +142,7 @@ if nav:
         if reset_btn:
             st.session_state.tasks = ["", "", ""]
             st.session_state.tasks_done = [False, False, False]
-            save_data()
-            st.rerun()
+            st.write("تم المسح!")  # سطر مؤقت للاختبار
     
     st.divider()
 ders = st.selectbox("تو كيژ دەرسێ دخوینی؟", 
