@@ -212,6 +212,12 @@ if nav:
             st.session_state.schedule["sun"] = sun_schedule
             save_data()
             st.rerun()
+        # زر إضافة مهمة جديدة
+    if st.button("+ ئەرکێ نوی", key=f"sun_add_{st.session_state.sun_reset}"):
+        sun_schedule.append({"start": "08:00", "end": "09:00", "task": "", "done": False})
+        st.session_state.schedule["sun"] = sun_schedule
+        save_data()
+        st.rerun()
     st.divider()
 ders = st.selectbox("تو كيژ دەرسێ دخوینی؟", 
     ["🧮 بیرکاری", "⚛️ فیزیا", "🧪 کیمیا", "🇬🇧 ئینگلیزی", 
