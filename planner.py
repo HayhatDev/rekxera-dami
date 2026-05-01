@@ -117,34 +117,34 @@ if nav:
     st.write(f"بخێر هاتێ {nav}! 🌟")
     
     # --- قائمة المهام ---
-st.divider()
-st.write("📋 **ئەرکێن تە**")
+    st.divider()
+    st.write("📋 **ئەرکێن تە**")
     
-
-col_t1, col_t2, col_t3 = st.columns(3)
-with col_t1:
-    done1 = st.checkbox("✅ تەواو", value=st.session_state.tasks_done[0], key="done1")
-    task1 = st.text_input("ئەرک ١", value=st.session_state.tasks[0], key="task1", disabled=done1)
-with col_t2:
-    done2 = st.checkbox("✅ تەواو", value=st.session_state.tasks_done[1], key="done2")
-    task2 = st.text_input("ئەرک ٢", value=st.session_state.tasks[1], key="task2", disabled=done2)
-with col_t3:
-    done3 = st.checkbox("✅ تەواو", value=st.session_state.tasks_done[2], key="done3")
-    task3 = st.text_input("ئەرک ٣", value=st.session_state.tasks[2], key="task3", disabled=done3)
-        
+    col_t1, col_t2, col_t3 = st.columns(3)
+    with col_t1:
+        done1 = st.checkbox("✅ تەواو", value=st.session_state.tasks_done[0], key="done1")
+        task1 = st.text_input("ئەرک ١", value=st.session_state.tasks[0], key="task1", disabled=done1)
+    with col_t2:
+        done2 = st.checkbox("✅ تەواو", value=st.session_state.tasks_done[1], key="done2")
+        task2 = st.text_input("ئەرک ٢", value=st.session_state.tasks[1], key="task2", disabled=done2)
+    with col_t3:
+        done3 = st.checkbox("✅ تەواو", value=st.session_state.tasks_done[2], key="done3")
+        task3 = st.text_input("ئەرک ٣", value=st.session_state.tasks[2], key="task3", disabled=done3)
+    
     # تحديث الخزنة
-st.session_state.tasks = [task1, task2, task3]
-st.session_state.tasks_done = [done1, done2, done3]
-save_data()
+    st.session_state.tasks = [task1, task2, task3]
+    st.session_state.tasks_done = [done1, done2, done3]
+    save_data()
     
     # --- زر إعادة ضبط المهام ---
-if all(st.session_state.tasks_done):
-    if st.button("🔄 ئەرکان ژێ بە"):
-        st.session_state.tasks = ["", "", ""]
-        st.session_state.tasks_done = [False, False, False]
-        save_data()
-        st.rerun()
-st.divider()
+    if all(st.session_state.tasks_done):
+        if st.button("🔄 ئەرکان ژێ بە"):
+            st.session_state.tasks = ["", "", ""]
+            st.session_state.tasks_done = [False, False, False]
+            save_data()
+            st.rerun()
+    
+    st.divider()
 ders = st.selectbox("تو كيژ دەرسێ دخوینی؟", 
     ["🧮 بیرکاری", "⚛️ فیزیا", "🧪 کیمیا", "🇬🇧 ئینگلیزی", 
      "🧬 زیندەوەرزانی", "📜 مێژوو", "🌍 جوگرافیا", "💻 کۆمپیوتەر","ئايين  ☪️"])
