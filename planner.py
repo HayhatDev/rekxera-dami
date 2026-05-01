@@ -21,13 +21,17 @@ def load_data():
             st.session_state.completed_sessions = data.get("sessions", 0)
             st.session_state.last_subject = data.get("last_subject", "—")
             st.session_state.study_history = data.get("history", [])
+            st.session_state.tasks = data.get("tasks", ["", "", ""])
+            st.session_state.tasks_done = data.get("tasks_done", [False, False, False])
 
 def save_data():
     data = {
         "total_seconds": st.session_state.total_study_seconds,
         "sessions": st.session_state.completed_sessions,
         "last_subject": st.session_state.last_subject,
-        "history": st.session_state.study_history
+        "history": st.session_state.study_history,
+        "tasks": st.session_state.tasks,
+        "tasks_done": st.session_state.tasks_done
     }
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
@@ -36,7 +40,13 @@ def save_data():
 if "data_loaded" not in st.session_state:
     load_data()
     st.session_state.data_loaded = True
-
+    
+# --- تهيئة قائمة المهام ---
+if "tasks" not in st.session_state:
+    st.session_state.tasks = ["", "", ""]
+if "tasks_done" not in st.session_state:
+    st.session_state.tasks_done = [False, False, False]
+    
 # --- تهيئة الإحصائيات ---
 if "total_study_seconds" not in st.session_state:
     st.session_state.total_study_seconds = 0
@@ -105,7 +115,30 @@ if "remaining_at_pause" not in st.session_state:
 nav = st.text_input("ناڤێ خوە بنڤیسە:", "قوتابی")
 if nav:
     st.write(f"بخێر هاتێ {nav}! 🌟")
-
+    
+    # --- قائمة المهام ---
+    st.divider()
+    st.write("📋 **ئەرکێن تە**")
+    
+    col_t1, col_t2, col_t3 = st.columns(3)
+    
+    with col_t1:
+        task1 = st.text_input("ئەرک ١", value=st.session_state.tasks[0], key="task1", disabled=st.session_state.tasks_done[0])
+        done1 = st.checkbox("✅ تەواو", value=st.session_state.tasks_done[0], key="done1")
+    with col_t2:
+        task2 = st.text_input("ئەرک ٢", value=st.session_state.tasks[1], key="task2", disabled=st.session_state.tasks_done[1])
+        done2 = st.checkbox("✅ تەواو", value=st.session_state.tasks_done[1], key="done2")
+    with col_t3:
+        task3 = st.text_input("ئەرک ٣", value=st.session_state.tasks[2], key="task3", disabled=st.session_state.tasks_done[2])
+        done3 = st.checkbox("✅ تەواو", value=st.session_state.tasks_done[2], key="done3")
+    
+    # تحديث الخزنة
+    st.session_state.tasks = [task1, task2, task3]
+    st.session_state.tasks_done = [done1, done2, done3]
+    save_data()
+    
+    st.divider()
+    
 ders = st.selectbox("تو كيژ دەرسێ دخوینی؟", 
     ["🧮 بیرکاری", "⚛️ فیزیا", "🧪 کیمیا", "🇬🇧 ئینگلیزی", 
      "🧬 زیندەوەرزانی", "📜 مێژوو", "🌍 جوگرافیا", "💻 کۆمپیوتەر","ئايين  ☪️"])
@@ -272,6 +305,19 @@ if st.session_state.dark_mode:
         /* الدائرة الرمادية في الخلفية */
         svg path:first-of-type {
             stroke: #555 !important;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
+# --- تطبيق تأثير الشطب على المهام المنجزة ---
+if any(st.session_state.tasks_done):
+    st.markdown("""
+    <style>
+        /* أي نص داخل صندوق إدخال تم تعطيله سيظهر مشطوباً */
+        input[disabled] {
+            text-decoration: line-through;
+            color: #888 !important;
+            background-color: #2d2d2d !important;
         }
     </style>
     """, unsafe_allow_html=True)
