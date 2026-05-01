@@ -138,6 +138,13 @@ st.session_state.tasks_done = [done1, done2, done3]
 save_data()
     
 st.divider()
+    # --- زر إعادة ضبط المهام ---
+if all(st.session_state.tasks_done):
+    if st.button("🔄 ئەرکان ژێ بە"):
+        st.session_state.tasks = ["", "", ""]
+        st.session_state.tasks_done = [False, False, False]
+        save_data()
+        st.rerun()
     
 ders = st.selectbox("تو كيژ دەرسێ دخوینی؟", 
     ["🧮 بیرکاری", "⚛️ فیزیا", "🧪 کیمیا", "🇬🇧 ئینگلیزی", 
