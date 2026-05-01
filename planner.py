@@ -40,6 +40,18 @@ def save_data():
 if "data_loaded" not in st.session_state:
     load_data()
     st.session_state.data_loaded = True
+
+# --- تهيئة الجدول الأسبوعي ---
+if "schedule" not in st.session_state:
+    st.session_state.schedule = {
+        "sun": [],  # ئێکشەمب
+        "mon": [],  # دووشەمب
+        "tue": [],  # سێشەمب
+        "wed": [],  # چارشەمب
+        "thu": [],  # پێنجشەمب
+        "fri": [],  # خودبە
+        "sat": [],  # شەمبی
+    }
     
 # --- تهيئة قائمة المهام ---
 if "tasks" not in st.session_state:
