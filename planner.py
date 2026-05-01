@@ -184,7 +184,7 @@ if nav:
                 "چالاکی",
                 value=entry["task"],
                 key=f"sun_task_{i}_{st.session_state.get('sun_reset', 0)}",
-                disabled=entry["done"],
+                disabled=done,
                 label_visibility="collapsed"
             )
         
