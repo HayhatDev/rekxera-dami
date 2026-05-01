@@ -180,7 +180,18 @@ if nav:
         col_time, col_done, col_task, col_delete = st.columns([2, 1, 5, 1])
         
         with col_time:
-            st.write(f"**{entry['start']} - {entry['end']}**")
+            start_time = st.time_input(
+                "دەستپێک",
+                value=datetime.strptime(entry["start"], "%H:%M").time() if entry["start"] else datetime.time(7, 0),
+                key=f"sun_start_{i}_{st.session_state.sun_reset}",
+                label_visibility="collapsed"
+            )
+            end_time = st.time_input(
+                "دووماهی",
+                value=datetime.strptime(entry["end"], "%H:%M").time() if entry["end"] else datetime.time(8, 0),
+                key=f"sun_end_{i}_{st.session_state.sun_reset}",
+                label_visibility="collapsed"
+            )
         
         with col_done:
             done = st.checkbox(
@@ -204,6 +215,8 @@ if nav:
         
         # تحديث البيانات
         entry["task"] = task_text
+        entry["start"] = start_time.strftime("%H:%M")
+        entry["end"] = end_time.strftime("%H:%M")
         entry["done"] = done
         
         if delete_btn:
