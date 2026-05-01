@@ -46,6 +46,8 @@ if "tasks" not in st.session_state:
     st.session_state.tasks = ["", "", ""]
 if "tasks_done" not in st.session_state:
     st.session_state.tasks_done = [False, False, False]
+if "task_reset_counter" not in st.session_state:
+    st.session_state.task_reset_counter = 0
     
 # --- تهيئة الإحصائيات ---
 if "total_study_seconds" not in st.session_state:
@@ -122,14 +124,14 @@ if nav:
     
     col_t1, col_t2, col_t3 = st.columns(3)
     with col_t1:
-        done1 = st.checkbox("✅ تەواو", value=st.session_state.tasks_done[0], key="done1")
-        task1 = st.text_input("ئەرک ١", value=st.session_state.tasks[0], key="task1", disabled=done1)
+        done1 = st.checkbox("✅ تەواو", value=st.session_state.tasks_done[0], key=f"done1_{st.session_state.task_reset_counter}")
+        task1 = st.text_input("ئەرک ١", value=st.session_state.tasks[0], key=f"task1_{st.session_state.task_reset_counter}", disabled=done1)
     with col_t2:
-        done2 = st.checkbox("✅ تەواو", value=st.session_state.tasks_done[1], key="done2")
-        task2 = st.text_input("ئەرک ٢", value=st.session_state.tasks[1], key="task2", disabled=done2)
+        done2 = st.checkbox("✅ تەواو", value=st.session_state.tasks_done[1], key=f"done2_{st.session_state.task_reset_counter}")
+        task2 = st.text_input("ئەرک ٢", value=st.session_state.tasks[1], key=f"task2_{st.session_state.task_reset_counter}", disabled=done2)
     with col_t3:
-        done3 = st.checkbox("✅ تەواو", value=st.session_state.tasks_done[2], key="done3")
-        task3 = st.text_input("ئەرک ٣", value=st.session_state.tasks[2], key="task3", disabled=done3)
+        done3 = st.checkbox("✅ تەواو", value=st.session_state.tasks_done[2], key=f"done3_{st.session_state.task_reset_counter}")
+        task3 = st.text_input("ئەرک ٣", value=st.session_state.tasks[2], key=f"task3_{st.session_state.task_reset_counter}", disabled=done3)
     
     # تحديث الخزنة
     st.session_state.tasks = [task1, task2, task3]
@@ -142,7 +144,9 @@ if nav:
         if reset_btn:
             st.session_state.tasks = ["", "", ""]
             st.session_state.tasks_done = [False, False, False]
-            st.write("تم المسح!")  # سطر مؤقت للاختبار
+            st.session_state.task_reset_counter += 1
+            save_data()
+            st.rerun()
     
     st.divider()
 ders = st.selectbox("تو كيژ دەرسێ دخوینی؟", 
