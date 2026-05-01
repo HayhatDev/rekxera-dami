@@ -136,7 +136,7 @@ if nav:
     st.session_state.tasks_done = [done1, done2, done3]
     save_data()
     
-        # --- زر إعادة ضبط المهام ---
+    # --- زر إعادة ضبط المهام ---
     if all(st.session_state.tasks_done) and any(st.session_state.tasks):
         reset_btn = st.button("🔄 ئەرکان ژێ بە")
         if reset_btn:
