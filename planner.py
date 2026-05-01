@@ -42,6 +42,8 @@ if "data_loaded" not in st.session_state:
     st.session_state.data_loaded = True
 
 # --- تهيئة الجدول الأسبوعي ---
+if "sun_reset" not in st.session_state:
+    st.session_state.sun_reset = 0
 if "schedule" not in st.session_state:
     st.session_state.schedule = {
         "sun": [],  # ئێکشەمب
@@ -206,6 +208,9 @@ if nav:
         
         if delete_btn:
             sun_schedule.pop(i)
+            st.session_state.sun_reset += 1
+            st.session_state.schedule["sun"] = sun_schedule
+            save_data()
             st.rerun()
     st.divider()
 ders = st.selectbox("تو كيژ دەرسێ دخوینی؟", 
