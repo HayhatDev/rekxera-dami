@@ -41,28 +41,7 @@ if "data_loaded" not in st.session_state:
     load_data()
     st.session_state.data_loaded = True
 
-# --- تهيئة الجدول الأسبوعي ---
-if "sun_reset" not in st.session_state:
-    st.session_state.sun_reset = 0
-if "schedule" not in st.session_state:
-    st.session_state.schedule = {
-        "sun": [],  # ئێکشەمب
-        "mon": [],  # دووشەمب
-        "tue": [],  # سێشەمب
-        "wed": [],  # چارشەمب
-        "thu": [],  # پێنجشەمب
-        "fri": [],  # خودبە
-        "sat": [],  # شەمبی
-    }
-    
-# --- تهيئة قائمة المهام ---
-if "tasks" not in st.session_state:
-    st.session_state.tasks = ["", "", ""]
-if "tasks_done" not in st.session_state:
-    st.session_state.tasks_done = [False, False, False]
-if "task_reset_counter" not in st.session_state:
-    st.session_state.task_reset_counter = 0
-    
+
 # --- تهيئة الإحصائيات ---
 if "total_study_seconds" not in st.session_state:
     st.session_state.total_study_seconds = 0
@@ -132,106 +111,7 @@ nav = st.text_input("ناڤێ خوە بنڤیسە:", "قوتابی")
 if nav:
     st.write(f"بخێر هاتێ {nav}! 🌟")
     
-    # --- قائمة المهام ---
-    st.divider()
-    st.write("📋 **ئەرکێن تە**")
-    
-    col_t1, col_t2, col_t3 = st.columns(3)
-    with col_t1:
-        done1 = st.checkbox("✅ تەواو", value=st.session_state.tasks_done[0], key=f"done1_{st.session_state.task_reset_counter}")
-        task1 = st.text_input("ئەرک ١", value=st.session_state.tasks[0], key=f"task1_{st.session_state.task_reset_counter}", disabled=done1)
-    with col_t2:
-        done2 = st.checkbox("✅ تەواو", value=st.session_state.tasks_done[1], key=f"done2_{st.session_state.task_reset_counter}")
-        task2 = st.text_input("ئەرک ٢", value=st.session_state.tasks[1], key=f"task2_{st.session_state.task_reset_counter}", disabled=done2)
-    with col_t3:
-        done3 = st.checkbox("✅ تەواو", value=st.session_state.tasks_done[2], key=f"done3_{st.session_state.task_reset_counter}")
-        task3 = st.text_input("ئەرک ٣", value=st.session_state.tasks[2], key=f"task3_{st.session_state.task_reset_counter}", disabled=done3)
-    
-    # تحديث الخزنة
-    st.session_state.tasks = [task1, task2, task3]
-    st.session_state.tasks_done = [done1, done2, done3]
-    save_data()
-    
-    # --- زر إعادة ضبط المهام ---
-    if all(st.session_state.tasks_done) and any(st.session_state.tasks):
-        reset_btn = st.button("🔄 ئەرکان ژێ بە")
-        if reset_btn:
-            st.session_state.tasks = ["", "", ""]
-            st.session_state.tasks_done = [False, False, False]
-            st.session_state.task_reset_counter += 1
-            save_data()
-            st.rerun()
-    
-    st.divider()
-    st.subheader("📅 خشتەیێ حەفتیانە")
-        # --- ئێکشەمب ---
-    st.write("### ☀️ ئێکشەمب")
-    
-        # تحميل بيانات اليوم من الخزنة
-    sun_schedule = st.session_state.schedule["sun"]
-    
-        # إذا لم توجد أي مهمة، أضف صفاً افتراضياً واحداً
-    if not sun_schedule:
-        sun_schedule.append({"start": "07:00", "end": "08:00", "task": "", "done": False})
-    
-    # عرض كل صف
-        # عرض كل صف
-    for i, entry in enumerate(sun_schedule):
-        col_time, col_done, col_task, col_delete = st.columns([2, 1, 5, 1])
-        
-        with col_time:
-            start_time = st.time_input(
-                "دەستپێک",
-                value=datetime.strptime(entry["start"], "%H:%M").time() if entry["start"] else datetime.time(7, 0),
-                key=f"sun_start_{i}_{st.session_state.sun_reset}",
-                label_visibility="collapsed"
-            )
-            end_time = st.time_input(
-                "دووماهی",
-                value=datetime.strptime(entry["end"], "%H:%M").time() if entry["end"] else datetime.time(8, 0),
-                key=f"sun_end_{i}_{st.session_state.sun_reset}",
-                label_visibility="collapsed"
-            )
-        
-        with col_done:
-            done = st.checkbox(
-                "✅",
-                value=entry["done"],
-                key=f"sun_done_{i}_{st.session_state.get('sun_reset', 0)}",
-                label_visibility="collapsed"
-            )
-        
-        with col_task:
-            task_text = st.text_input(
-                "چالاکی",
-                value=entry["task"],
-                key=f"sun_task_{i}_{st.session_state.get('sun_reset', 0)}",
-                disabled=done,
-                label_visibility="collapsed"
-            )
-        
-        with col_delete:
-            delete_btn = st.button("🗑️", key=f"sun_del_{i}_{st.session_state.get('sun_reset', 0)}")
-        
-        # تحديث البيانات
-        entry["task"] = task_text
-        entry["start"] = start_time.strftime("%H:%M")
-        entry["end"] = end_time.strftime("%H:%M")
-        entry["done"] = done
-        
-        if delete_btn:
-            sun_schedule.pop(i)
-            st.session_state.sun_reset += 1
-            st.session_state.schedule["sun"] = sun_schedule
-            save_data()
-            st.rerun()
-        # زر إضافة مهمة جديدة
-    if st.button("+ ئەرکێ نوی", key=f"sun_add_{st.session_state.sun_reset}"):
-        sun_schedule.append({"start": "08:00", "end": "09:00", "task": "", "done": False})
-        st.session_state.schedule["sun"] = sun_schedule
-        save_data()
-        st.rerun()
-    st.divider()
+   st.divider()
 ders = st.selectbox("تو كيژ دەرسێ دخوینی؟", 
     ["🧮 بیرکاری", "⚛️ فیزیا", "🧪 کیمیا", "🇬🇧 ئینگلیزی", 
      "🧬 زیندەوەرزانی", "📜 مێژوو", "🌍 جوگرافیا", "💻 کۆمپیوتەر","ئايين  ☪️"])
