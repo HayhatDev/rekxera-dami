@@ -1,5 +1,19 @@
 import streamlit as st
 from datetime import datetime
+import json
+import os
+
+SCHEDULE_FILE = "schedule_data.json"
+
+def load_schedule():
+    if os.path.exists(SCHEDULE_FILE):
+        with open(SCHEDULE_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return None
+
+def save_schedule():
+    with open(SCHEDULE_FILE, "w", encoding="utf-8") as f:
+        json.dump(st.session_state.schedule, f, ensure_ascii=False, indent=2)
 
 st.set_page_config(
     page_title="خشتەیێ حەفتیانە",
@@ -10,9 +24,13 @@ st.title("📅 خشتەیێ حەفتیانە")
 
 # --- تهيئة الجدول الأسبوعي ---
 if "schedule" not in st.session_state:
-    st.session_state.schedule = {
-        "sun": [], "mon": [], "tue": [], "wed": [], "thu": [], "fri": [], "sat": [],
-    }
+    loaded = load_schedule()
+    if loaded:
+        st.session_state.schedule = loaded
+    else:
+        st.session_state.schedule = {
+            "sun": [], "mon": [], "tue": [], "wed": [], "thu": [], "fri": [], "sat": [],
+        }
 
 # متغيرات إعادة الضبط لكل يوم
 for day in ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]:
@@ -79,11 +97,13 @@ for day_key, day_name in days:
             schedule.pop(i)
             st.session_state[f"{day_key}_reset"] += 1
             st.session_state.schedule[day_key] = schedule
+            save_schedule()
             st.rerun()
     
     if st.button("+ ئەرکێ نوی", key=f"{day_key}_add_{st.session_state[f'{day_key}_reset']}"):
         schedule.append({"start": "08:00", "end": "09:00", "task": "", "done": False})
         st.session_state.schedule[day_key] = schedule
+        save_schedule()
         st.rerun()
     
     st.divider()
