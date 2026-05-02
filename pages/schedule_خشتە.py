@@ -92,6 +92,7 @@ for day_key, day_name in days:
         entry["done"] = done
         entry["start"] = start_time.strftime("%H:%M")
         entry["end"] = end_time.strftime("%H:%M")
+        save_schedule()
         
         if delete_btn:
             schedule.pop(i)
