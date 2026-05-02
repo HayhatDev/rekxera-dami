@@ -110,8 +110,9 @@ if "remaining_at_pause" not in st.session_state:
 nav = st.text_input("ناڤێ خوە بنڤیسە:", "قوتابی")
 if nav:
     st.write(f"بخێر هاتێ {nav}! 🌟")
-    
-   st.divider()
+
+st.divider()
+
 ders = st.selectbox("تو كيژ دەرسێ دخوینی؟", 
     ["🧮 بیرکاری", "⚛️ فیزیا", "🧪 کیمیا", "🇬🇧 ئینگلیزی", 
      "🧬 زیندەوەرزانی", "📜 مێژوو", "🌍 جوگرافیا", "💻 کۆمپیوتەر","ئايين  ☪️"])
