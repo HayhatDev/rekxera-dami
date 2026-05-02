@@ -8,12 +8,21 @@ SCHEDULE_FILE = "schedule_data.json"
 def load_schedule():
     if os.path.exists(SCHEDULE_FILE):
         with open(SCHEDULE_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
+            data = json.load(f)
+            if "dark_mode" in data:
+                st.session_state.dark_mode = data["dark_mode"]
+            return data.get("schedule", None)
     return None
 
+
 def save_schedule():
+    data = {
+        "schedule": st.session_state.schedule,
+        "dark_mode": st.session_state.dark_mode
+    }
     with open(SCHEDULE_FILE, "w", encoding="utf-8") as f:
-        json.dump(st.session_state.schedule, f, ensure_ascii=False, indent=2)
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
 
 st.set_page_config(
     page_title="خشتەیێ حەفتیانە",
