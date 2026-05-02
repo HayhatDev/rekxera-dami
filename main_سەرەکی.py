@@ -85,6 +85,7 @@ with st.sidebar:
     dark_btn = st.checkbox("شەڤ", value=st.session_state.dark_mode)
     if dark_btn != st.session_state.dark_mode:
         st.session_state.dark_mode = dark_btn
+        save_data()
         st.rerun()
 
     st.divider()
