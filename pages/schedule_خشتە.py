@@ -22,6 +22,9 @@ st.set_page_config(
 
 st.title("📅 خشتەیێ حەفتیانە")
 
+if "dark_mode" not in st.session_state:
+    st.session_state.dark_mode = False
+
 # --- تهيئة الجدول الأسبوعي ---
 if "schedule" not in st.session_state:
     loaded = load_schedule()
@@ -113,12 +116,41 @@ for tab, day_key, day_name in zip(tabs, tab_keys, tab_labels):
             save_schedule()
             st.rerun()
 
-# --- تشطيب المهام المنجزة ---
-st.markdown("""
-<style>
-    input[disabled] {
-        text-decoration: line-through;
-        color: #888 !important;
-    }
-</style>
-""", unsafe_allow_html=True)
+# --- تطبيق الوضع الليلي والتشطيب ---
+if st.session_state.dark_mode:
+    st.markdown("""
+    <style>
+        .stApp {
+            background-color: #1a1a2e;
+        }
+        .css-1d391kg, [data-testid="stSidebar"] {
+            background-color: #16213e;
+        }
+        .stApp, .stApp h1, .stApp h2, .stApp h3, .stApp p, .stApp label {
+            color: #e0e0e0 !important;
+        }
+        .stTextInput input, .stSelectbox select, .stTimeInput input {
+            background-color: #2d2d44;
+            color: #ffffff;
+            border: 1px solid #444;
+        }
+        .stButton button {
+            background-color: #4CAF50;
+            color: white;
+        }
+        input[disabled] {
+            text-decoration: line-through;
+            color: #888 !important;
+            background-color: #2d2d44 !important;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+else:
+    st.markdown("""
+    <style>
+        input[disabled] {
+            text-decoration: line-through;
+            color: #888 !important;
+        }
+    </style>
+    """, unsafe_allow_html=True)
