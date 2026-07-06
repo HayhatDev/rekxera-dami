@@ -745,11 +745,7 @@ def render_sidebar():
                     "weekly_schedule": {}
                 }
                 try:
-                    schedule_file = get_schedule_file()
-                    if os.path.exists(schedule_file):
-                        with open(schedule_file, "r", encoding="utf-8") as f:
-                            schedule_data = json.load(f)
-                            export_data["weekly_schedule"] = schedule_data.get("schedule", {})
+                    export_data["weekly_schedule"] = get_schedule_data()
                 except Exception as e:
                     export_data["schedule_error"] = str(e)
 
