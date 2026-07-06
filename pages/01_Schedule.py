@@ -838,9 +838,26 @@ if st.session_state.ai_loading and st.session_state.ai_input:
         st.session_state.ai_loading = False
 
     today_str_ai = datetime.now().strftime("%A")
-    prompt = f"""You are a study schedule generator. The user has the following study goals for the upcoming week (starting today, {today_str_ai}):
+    prompt = f"""You are a realistic study schedule generator. The user has the following study goals for the upcoming week (starting today, {today_str_ai}):
 
 {st.session_state.ai_input}
+
+CRITICAL RULES FOR REALISTIC SCHEDULES:
+
+1. **No one studies every single day.** Always include at least 1-2 rest days per week (typically Saturday and/or Sunday).
+2. **Maximum 2-4 hours of focused study per day.** More than 4 hours is unrealistic and leads to burnout.
+3. **If the user mentions a total number of hours (e.g., "10 hours of math")**, distribute it across 4-5 days (not 7 days).
+4. **Breaks are mandatory** — include a 15-minute break after every 50-90 minutes of study.
+5. **Respect realistic time slots** — typical study times are 9:00-12:00, 13:00-16:00, 18:00-21:00.
+6. **Weekends (Sat/Sun) should be lighter** — 1-2 hours max, or rest days.
+
+INTERPRETATION EXAMPLES:
+
+- "I need to study math for 10 hours" → Schedule 2-2.5 hours per day across 4-5 days (Mon-Fri), with rest on Sat/Sun.
+- "I need to study physics for 5 hours" → Schedule 1-1.5 hours per day across 3-4 days.
+- "I need to study math for 10 hours, physics for 5 hours" → 10 math hours across 4-5 days, 5 physics hours across 3-4 days. Max 3 hours total per day.
+- "I need to study 8 hours every day" → User specifically requested this, honor it but include breaks.
+- "I prefer evenings" → Schedule sessions after 17:00.
 
 Return ONLY a valid JSON object (no extra text):
 {{
@@ -848,7 +865,10 @@ Return ONLY a valid JSON object (no extra text):
   "tue": [...], "wed": [...], "thu": [...],
   "fri": [...], "sat": [...], "sun": [...]
 }}
-Use 24-hour format. Distribute hours per user preferences. Include breaks."""
+
+If the user's goal is unrealistic (e.g., "study 15 hours a day"), politely adjust to a realistic schedule (max 4 hours/day). Do NOT exceed 4 hours of study on any single day unless the user explicitly demands it in capital letters.
+
+Use 24-hour format. Distribute hours per user preferences. Include breaks (15 min after 50-90 min sessions)."""
 
     headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
     payload = {
