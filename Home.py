@@ -6,6 +6,8 @@ import streamlit.components.v1 as components
 import pandas as pd
 import base64
 import json
+import os
+import hashlib
 from utils import save_data, load_data, save_preferences, load_preferences, get_schedule_data
 
 
